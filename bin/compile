@@ -15,6 +15,8 @@ function indent() {
 BUILD_DIR="$1"
 CACHE_DIR="$2"
 
+mkdir -p "$CACHE_DIR"
+
 VERSION="1.1.6"
 URL="http://apache.mirrors.pair.com/cassandra/$VERSION/apache-cassandra-$VERSION-bin.tar.gz"
 
