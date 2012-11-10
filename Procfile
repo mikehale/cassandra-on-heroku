@@ -1,0 +1,1 @@
+cassandra: bin/cassandra
