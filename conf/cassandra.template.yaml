@@ -59,7 +59,7 @@ ssl_storage_port: 7001
 
 listen_address: localhost
 
-rpc_address: localhost
+rpc_address: 0.0.0.0
 rpc_port: THRIFT_PORT
 
 rpc_keepalive: true
