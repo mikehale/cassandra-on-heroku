@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+BUILD_DIR="$1"
+CACHE_DIR="$2"
+
+VERSION="1.1.6"
+URL="http://apache.mirrors.pair.com/cassandra/$VERSION/apache-cassandra-$VERSION-bin.tar.gz"
+
+if [ ! -f "$CACHE_DIR/apache-cassandra-$VERSION-bin.tar.gz" ]; then
+    curl --fail --retry 3 --silent "$URL" -o "$CACHE_DIR/apache-cassandra-$VERSION-bin.tar.gz"
+fi
+
+tar -C "$BUILD_DIR" -zxf "$CACHE_DIR/apache-cassandra-$VERSION-bin.tar.gz"
+
+rm -rf "$BUILD_DIR/apache-cassandra-$VERSION/conf"
+
+cp -a "$BUILD_DIR/conf" "$BUILD_DIR/apache-cassandra-$VERSION"
+
+mkdir -p "$BUILD_DIR/bin"
+
+cat <<EOF >"$BUILD_DIR/bin/cassandra"
+#!/bin/sh
+
+if [ -z "\$PORT" ]; then
+  echo "PORT is not set" >&2
+  exit 1
+fi
+
+cd apache-cassandra-$VERSION
+
+sed -e "s/THRIFT_PORT/\$PORT/" conf/cassandra.template.yaml > conf/cassandra.yaml
+
+exec bin/cassandra -f
+EOF
+
+chmod 755 "$BUILD_DIR/bin/cassandra"
