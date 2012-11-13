@@ -49,3 +49,17 @@ exec bin/cassandra -f
 EOF
 
 chmod 755 "$BUILD_DIR/bin/cassandra"
+
+
+## Priam
+cd $CACHE_DIR
+
+if [ ! -d "$CACHE_DIR/Priam" ]; then
+    git clone https://github.com/mikehale/Priam
+fi
+
+cd Priam;
+git pull
+
+# Retry failed builds for up to 120 seconds
+while ! ./gradlew build -x test; do echo 'retry'; done
