@@ -12,3 +12,17 @@ $ heroku routes:attach <route> cassandra.1
 $ cd where-you-have-cassandra-locally
 $ bin/cassandra-cli -h <route host> -p <route port>
 ```
+
+Kernel app:
+
+```bash
+anvil_slug_url= "$(anvil build -p -b https://github.com/kr/heroku-buildpack-inline.git)"
+release_key=$(curl -F url="$anvil_slug_url" https://arsenal.herokai.com/stores/cassandra | ruby -r json -e 'puts JSON.parse(STDIN.read)["key"]')
+ion-client releases:create -a cassandra $release_key
+ion-client config:set -a cassandra DARWIN_CONFIG_NAME=generic CASSANDRA_SCALE=1 DEFAULT_INSTANCE_SIZE=m1.xlarge PACKAGES=openjdk-6-jre-headless INSTANCE_COUNT=1
+```
+
+TODO:
+* figure out how to run priam-web.war with embedded jetty on http://127.0.0.1:8080/Priam/
+* run as cassandra:cassandra
+* add cassandra to sudo group?

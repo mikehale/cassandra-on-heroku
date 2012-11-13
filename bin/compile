@@ -71,3 +71,10 @@ while ! ./gradlew build -x test; do echo 'retry'; done
 cp "$CACHE_DIR/Priam/priam/build/libs/priam-$VERSION.jar" "$cassandra_dir/lib"
 
 perl -pi -e 's/classname=".*"/classname="com.netflix.priam.cassandra.NFThinCassandraDaemon"/' "$cassandra_dir/bin/cassandra"
+
+
+### priam-web
+mkdir -p "$BUILD_DIR/priam-web/lib"
+cp "$CACHE_DIR/Priam/priam-web/build/libs/priam-$VERSION.jar" "$BUILD_DIR/priam-web/lib"
+
+
