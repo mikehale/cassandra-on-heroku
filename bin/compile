@@ -43,6 +43,7 @@ fi
 cd apache-cassandra-$VERSION
 
 sed -e "s/THRIFT_PORT/\$PORT/" conf/cassandra.template.yaml > conf/cassandra.yaml
+perl -pi -e 's/Xss.*k/Xss205k/' conf/cassandra-env.sh
 
 exec bin/cassandra -f
 EOF
