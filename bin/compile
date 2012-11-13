@@ -50,8 +50,10 @@ EOF
 
 chmod 755 "$BUILD_DIR/bin/cassandra"
 
+cassandra_dir="$BUILD_DIR/apache-cassandra-$VERSION"
 
 ## Priam
+
 cd $CACHE_DIR
 
 if [ ! -d "$CACHE_DIR/Priam" ]; then
@@ -61,5 +63,11 @@ fi
 cd Priam;
 git pull
 
+VERSION=$(awk -F '=' '{print $2}' gradle.properties)
+
 # Retry failed builds for up to 120 seconds
 while ! ./gradlew build -x test; do echo 'retry'; done
+
+cp "$CACHE_DIR/Priam/priam/build/libs/priam-$VERSION.jar" "$cassandra_dir/lib"
+
+perl -pi -e 's/classname=".*"/classname="com.netflix.priam.cassandra.NFThinCassandraDaemon"/' "$cassandra_dir/bin/cassandra"
