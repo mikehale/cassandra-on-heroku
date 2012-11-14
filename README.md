@@ -23,4 +23,9 @@ ion-client config:set -a cassandra DARWIN_CONFIG_NAME=generic CASSANDRA_SCALE=1 
 ```
 
 TODO:
-* add cassandra to sudo group?
+* /etc/awscredential.properties (update code to use ENV)
+* remove ref to /var/log/tomcat7/priam.log
+* don't require sudo
+* provision simpledb domains and settings if they do not exist
+* provision IAM creds and add them to the app ENV
+
