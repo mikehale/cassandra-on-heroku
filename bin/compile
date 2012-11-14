@@ -73,8 +73,29 @@ cp "$CACHE_DIR/Priam/priam/build/libs/priam-$VERSION.jar" "$cassandra_dir/lib"
 perl -pi -e 's/classname=".*"/classname="com.netflix.priam.cassandra.NFThinCassandraDaemon"/' "$cassandra_dir/bin/cassandra"
 
 
+### bin/priam
+cat <<EOF >"$BUILD_DIR/bin/priam"
+#!/bin/sh
+(
+  cd ../priam-web
+  java -jar lib/jetty-runner.jar --port $PORT --path /Priam priam-$VERSION.war
+)
+EOF
+
+chmod 755 "$BUILD_DIR/bin/priam"
+
+
 ### priam-web
 mkdir -p "$BUILD_DIR/priam-web/lib"
-cp "$CACHE_DIR/Priam/priam-web/build/libs/priam-$VERSION.jar" "$BUILD_DIR/priam-web/lib"
+cp "$CACHE_DIR/Priam/priam-web/build/libs/priam-web-$VERSION.war" "$BUILD_DIR/priam-web/lib"
 
 
+### jetty-runner
+VERSION="7.0.0.v20091005"
+URL="http://repo2.maven.org/maven2/org/mortbay/jetty/jetty-runner/$VERSION/jetty-runner-$VERSION.jar"
+
+if [ ! -f "$CACHE_DIR/jetty-runner-$VERSION.jar" ]; then
+    curl --fail --retry 3 --silent "$URL" -o "$CACHE_DIR/jetty-runner-$VERSION.jar"
+fi
+
+cp "$CACHE_DIR/jetty-runner-$VERSION.jar" "$BUILD_DIR/priam-web/lib/jetty-runner.jar"
