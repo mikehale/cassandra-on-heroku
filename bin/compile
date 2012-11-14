@@ -76,10 +76,8 @@ perl -pi -e 's/classname=".*"/classname="com.netflix.priam.cassandra.NFThinCassa
 ### bin/priam
 cat <<EOF >"$BUILD_DIR/bin/priam"
 #!/bin/sh
-(
-  cd ../priam-web
-  java -jar lib/jetty-runner.jar --port $PORT --path /Priam priam-$VERSION.war
-)
+cd priam-web
+exec java -jar lib/jetty-runner.jar --port \$PORT --path /Priam lib/priam-web-1.1.9-SNAPSHOT.war
 EOF
 
 chmod 755 "$BUILD_DIR/bin/priam"
