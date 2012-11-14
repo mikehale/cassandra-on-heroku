@@ -65,7 +65,7 @@ git pull
 
 VERSION=$(awk -F '=' '{print $2}' gradle.properties)
 
-# Retry failed builds for up to 120 seconds
+# Retry failed builds
 while ! ./gradlew build -x test; do echo 'retry'; done
 
 cp "$CACHE_DIR/Priam/priam/build/libs/priam-$VERSION.jar" "$cassandra_dir/lib"
