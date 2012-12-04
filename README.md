@@ -1,3 +1,5 @@
+Platform app:
+
 ```bash
 $ git clone https://github.com/dpiddy/cassandra-on-heroku
 $ cd cassandra-on-heroku
