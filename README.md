@@ -25,6 +25,10 @@ $ ion-client releases:create -a cassandra <arsenal id from previous step>
 $ ion-client config:set -a cassandra DARWIN_CONFIG_NAME=generic CASSANDRA_SCALE=1 PRIAM_SCALE=1 DEFAULT_INSTANCE_SIZE=m1.xlarge PACKAGES=openjdk-6-jre-headless INSTANCE_COUNT=1
 ```
 
+Boot a cassandra instance in ion
+
+
+
 TODO:
 * /etc/awscredential.properties (update code to use ENV)
 * remove ref to /var/log/tomcat7/priam.log
